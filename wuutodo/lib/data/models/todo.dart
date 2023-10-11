@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:wuutodo/utils/utils.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Todo extends Equatable {
@@ -7,7 +8,7 @@ class Todo extends Equatable {
   final String note;
   final String time;
   final String date;
-  //final TaskCategory category
+  final TodoCategory category;
   final bool isCompleted;
 
   const Todo(
@@ -16,6 +17,7 @@ class Todo extends Equatable {
       required this.note,
       required this.time,
       required this.date,
+      required this.category,
       required this.isCompleted});
 
   @override

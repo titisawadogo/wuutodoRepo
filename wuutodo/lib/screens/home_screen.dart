@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wuutodo/data/data.dart';
 import 'package:wuutodo/utils/utils.dart';
 import 'package:gap/gap.dart';
 import 'package:wuutodo/widgets/widgets.dart';
@@ -37,51 +38,68 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         Positioned(
-            top: 170,
+            top: 130,
             right: 0,
             left: 0,
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  CommonContainer(
-                    height: deviceSize.height * 0.3,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: 8,
-                        itemBuilder: (ctx, index) {
-                          return const Text('Home');
-                        }),
-                  ),
-                  const Gap(20),
-                  Text(
-                    'Completed',
-                    style: context.textTheme.headlineMedium,
-                  ),
-                  const Gap(20),
-                  CommonContainer(
-                    height: deviceSize.height * 0.25,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: 8,
-                        itemBuilder: (ctx, index) {
-                          return const Text('Home');
-                        }),
-                  ),
-                  const Gap(20),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: DisplayWHiteText(
-                          text: 'Add New Todo',
-                        ),
-                      ))
-                ],
+            child: SafeArea(
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const DisplayListOfTodos(todos: [
+                      Todo(
+                          title: 'title 1',
+                          note: 'note',
+                          time: '10:25',
+                          date: 'Oct, 11 2023',
+                          isCompleted: false,
+                          category: TodoCategory.personal),
+                      Todo(
+                          title: 'title 2',
+                          note: 'note',
+                          time: '10:25',
+                          date: 'Oct, 11 2023',
+                          isCompleted: false,
+                          category: TodoCategory.health)
+                    ]),
+                    const Gap(20),
+                    Text(
+                      'Completed',
+                      style: context.textTheme.headlineMedium,
+                    ),
+                    const Gap(20),
+                    DisplayListOfTodos(
+                      todos: [
+                        Todo(
+                            title: 'title 1',
+                            note: 'note',
+                            time: '10:25',
+                            date: 'Oct, 11 2023',
+                            isCompleted: true,
+                            category: TodoCategory.education),
+                        Todo(
+                            title: 'title 2',
+                            note: 'note',
+                            time: '10:25',
+                            date: 'Oct, 11 2023',
+                            isCompleted: true,
+                            category: TodoCategory.work)
+                      ],
+                      isCompleted: true,
+                    ),
+                    const Gap(20),
+                    ElevatedButton(
+                        onPressed: () {},
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: DisplayWHiteText(
+                            text: 'Add New Todo',
+                          ),
+                        ))
+                  ],
+                ),
               ),
             ))
       ],
