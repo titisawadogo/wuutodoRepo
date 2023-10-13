@@ -34,7 +34,19 @@ class DisplayListOfTodos extends StatelessWidget {
               itemCount: todos.length,
               itemBuilder: (ctx, index) {
                 final todo = todos[index];
-                return TodoTile(todo: todo);
+                return InkWell(
+                    onLongPress: () {},
+                    onTap: () async {
+                      await showModalBottomSheet(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(30))),
+                          context: context,
+                          builder: (context) {
+                            return TodoDetails(todo: todo);
+                          });
+                    },
+                    child: TodoTile(todo: todo));
               },
               separatorBuilder: (BuildContext context, int index) {
                 return const Divider(

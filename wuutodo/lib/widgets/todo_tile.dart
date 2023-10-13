@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wuutodo/data/data.dart';
 import 'package:gap/gap.dart';
 import 'package:wuutodo/utils/utils.dart';
+import 'package:wuutodo/widgets/widgets.dart';
 
 class TodoTile extends StatelessWidget {
   const TodoTile({super.key, required this.todo, this.onCompleted});
@@ -23,14 +24,8 @@ class TodoTile extends StatelessWidget {
       padding: EdgeInsets.only(left: 16, top: 10, bottom: 10),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(9.0),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: todo.category.color.withOpacity(backgroundOpacity),
-                border: Border.all(
-                    width: 2,
-                    color: todo.category.color.withOpacity(iconOpacity))),
+          CircleContainer(
+            color: todo.category.color.withOpacity(backgroundOpacity),
             child: Center(
                 child: Icon(
               todo.category.icon,
