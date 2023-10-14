@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:wuutodo/config/routes/routes.dart';
 import 'package:wuutodo/data/data.dart';
 import 'package:wuutodo/utils/utils.dart';
 import 'package:gap/gap.dart';
 import 'package:wuutodo/widgets/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
+  static HomeScreen builder(BuildContext context, GoRouterState state) =>
+      const HomeScreen();
   const HomeScreen({super.key});
 
   @override
@@ -91,7 +95,9 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const Gap(20),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.push(RouteLocation.createTodo);
+                        },
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: DisplayWHiteText(
