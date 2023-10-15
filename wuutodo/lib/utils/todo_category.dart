@@ -11,6 +11,15 @@ enum TodoCategory {
   travel(Icons.flight, Colors.pink),
   work(Icons.work, Colors.amber);
 
+  static TodoCategory stringToCategory(String name) {
+    try {
+      return TodoCategory.values
+          .firstWhere((category) => category.name == name);
+    } catch (e) {
+      return TodoCategory.others;
+    }
+  }
+
   static TodoCategory stringToTodoCategory(String name) {
     try {
       return TodoCategory.values.firstWhere(

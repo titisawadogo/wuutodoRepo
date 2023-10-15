@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
+
 import 'package:wuutodo/utils/utils.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
@@ -30,5 +33,49 @@ class Todo extends Equatable {
       date,
       isCompleted,
     ];
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      TodoKeys.id: id,
+      TodoKeys.title: title,
+      TodoKeys.note: note,
+      TodoKeys.time: time,
+      TodoKeys.date: date,
+      TodoKeys.category: category.name,
+      TodoKeys.isCompleted: isCompleted,
+    };
+  }
+
+  factory Todo.fromJson(Map<String, dynamic> map) {
+    return Todo(
+      id: map[TodoKeys.id],
+      title: map[TodoKeys.title],
+      note: map[TodoKeys.note],
+      time: map[TodoKeys.time],
+      date: map[TodoKeys.date],
+      category: TodoCategory.stringToCategory(map[TodoKeys.category]),
+      isCompleted: map[TodoKeys.isCompleted] as bool,
+    );
+  }
+
+  Todo copyWith({
+    int? id,
+    String? title,
+    String? note,
+    String? time,
+    String? date,
+    TodoCategory? category,
+    bool? isCompleted,
+  }) {
+    return Todo(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      note: note ?? this.note,
+      time: time ?? this.time,
+      date: date ?? this.date,
+      category: category ?? this.category,
+      isCompleted: isCompleted ?? this.isCompleted,
+    );
   }
 }
