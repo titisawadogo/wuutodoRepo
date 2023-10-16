@@ -34,7 +34,7 @@ class TodoDetails extends StatelessWidget {
         ),
         const Gap(16),
         Visibility(
-            visible: todo.isCompleted,
+            visible: !todo.isCompleted,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

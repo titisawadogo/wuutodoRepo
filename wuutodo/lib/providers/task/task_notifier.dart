@@ -28,8 +28,8 @@ class TodoNotifier extends StateNotifier<TodoState> {
   Future<void> updateTodo(Todo todo) async {
     try {
       final isCompleted = !todo.isCompleted;
-      final updatedTask = todo.copyWith(isCompleted: isCompleted);
-      await _repository.updateTodo(updatedTask);
+      final updatedTodo = todo.copyWith(isCompleted: isCompleted);
+      await _repository.updateTodo(updatedTodo);
       getTodos();
     } catch (e) {
       debugPrint(e.toString());
@@ -38,8 +38,8 @@ class TodoNotifier extends StateNotifier<TodoState> {
 
   void getTodos() async {
     try {
-      final tasks = await _repository.getAllTodos();
-      state = state.copyWith(tasks: tasks);
+      final todos = await _repository.getAllTodos();
+      state = state.copyWith(todos: todos);
     } catch (e) {
       debugPrint(e.toString());
     }

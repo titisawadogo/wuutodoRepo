@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:wuutodo/data/data.dart';
+import 'package:wuutodo/providers/providers.dart';
 import 'package:wuutodo/utils/utils.dart';
 import 'package:gap/gap.dart';
 import 'package:wuutodo/widgets/widgets.dart';
 import 'common_container.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DisplayListOfTodos extends StatelessWidget {
+class DisplayListOfTodos extends ConsumerWidget {
   const DisplayListOfTodos(
       {super.key, required this.todos, this.isCompleted = false});
 
@@ -13,7 +15,7 @@ class DisplayListOfTodos extends StatelessWidget {
   final bool isCompleted;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final deviceSize = context.deviceSize;
     final height =
         isCompleted ? deviceSize.height * 0.25 : deviceSize.height * 0.3;
@@ -35,7 +37,10 @@ class DisplayListOfTodos extends StatelessWidget {
               itemBuilder: (ctx, index) {
                 final todo = todos[index];
                 return InkWell(
-                    onLongPress: () {},
+                    onLongPress: () {
+                      AppAlerts.showAlertDeleteDialog(
+                          context: context, ref: ref, todo: todo);
+                    },
                     onTap: () async {
                       await showModalBottomSheet(
                           shape: const RoundedRectangleBorder(
@@ -46,7 +51,22 @@ class DisplayListOfTodos extends StatelessWidget {
                             return TodoDetails(todo: todo);
                           });
                     },
-                    child: TodoTile(todo: todo));
+                    child: TodoTile(
+                        todo: todo,
+                        onCompleted: (value) async {
+                          await ref
+                              .read(todoProvider.notifier)
+                              .updateTodo(todo)
+                              .then(
+                            (value) {
+                              AppAlerts.displaySnackbar(
+                                  context,
+                                  todo.isCompleted
+                                      ? 'Task incompleted'
+                                      : 'Task completed');
+                            },
+                          );
+                        }));
               },
               separatorBuilder: (BuildContext context, int index) {
                 return const Divider(

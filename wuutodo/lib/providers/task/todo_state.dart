@@ -13,7 +13,7 @@ class TodoState extends Equatable {
   });
 
   TodoState copyWith({
-    List<Todo>? tasks,
+    List<Todo>? todos,
   }) {
     return TodoState(
       todos: todos ?? this.todos,

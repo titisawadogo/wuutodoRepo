@@ -43,7 +43,7 @@ class Todo extends Equatable {
       TodoKeys.time: time,
       TodoKeys.date: date,
       TodoKeys.category: category.name,
-      TodoKeys.isCompleted: isCompleted,
+      TodoKeys.isCompleted: isCompleted ? 1 : 0,
     };
   }
 
@@ -55,7 +55,7 @@ class Todo extends Equatable {
       time: map[TodoKeys.time],
       date: map[TodoKeys.date],
       category: TodoCategory.stringToCategory(map[TodoKeys.category]),
-      isCompleted: map[TodoKeys.isCompleted] as bool,
+      isCompleted: map[TodoKeys.isCompleted] == 1 ? true : false,
     );
   }
 

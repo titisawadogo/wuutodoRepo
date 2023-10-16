@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:wuutodo/config/routes/routes.dart';
 import 'package:wuutodo/data/data.dart';
+import 'package:wuutodo/providers/providers.dart';
 import 'package:wuutodo/utils/utils.dart';
 import 'package:gap/gap.dart';
 import 'package:wuutodo/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   static HomeScreen builder(BuildContext context, GoRouterState state) =>
       const HomeScreen();
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colors = context.colorScheme;
     final deviceSize = context.deviceSize;
+    final todoState = ref.watch(todoProvider);
+    final inCompletedTasks = _incompltedTask(todoState.todos, ref);
+    final completedTasks = _compltedTask(todoState.todos, ref);
 
     return Scaffold(
         body: Stack(
@@ -29,13 +34,13 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     DisplayWHiteText(
-                      text: 'Oct 10, 2023',
+                      text: 'Welcome to',
                       fontsize: 20,
                       fontweight: FontWeight.normal,
                     ),
                     DisplayWHiteText(
                       text: 'WuuTodo',
-                      fontsize: 40,
+                      fontsize: 50,
                     ),
                   ]),
             ),
@@ -52,22 +57,7 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const DisplayListOfTodos(todos: [
-                      Todo(
-                          title: 'title 1',
-                          note: 'note',
-                          time: '10:25',
-                          date: 'Oct, 11 2023',
-                          isCompleted: false,
-                          category: TodoCategory.personal),
-                      Todo(
-                          title: 'title 2',
-                          note: 'note',
-                          time: '10:25',
-                          date: 'Oct, 11 2023',
-                          isCompleted: false,
-                          category: TodoCategory.health)
-                    ]),
+                    DisplayListOfTodos(todos: inCompletedTasks),
                     const Gap(20),
                     Text(
                       'Completed',
@@ -75,22 +65,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const Gap(20),
                     DisplayListOfTodos(
-                      todos: [
-                        Todo(
-                            title: 'title 1',
-                            note: 'note',
-                            time: '10:25',
-                            date: 'Oct, 11 2023',
-                            isCompleted: true,
-                            category: TodoCategory.education),
-                        Todo(
-                            title: 'title 2',
-                            note: 'note',
-                            time: '10:25',
-                            date: 'Oct, 11 2023',
-                            isCompleted: true,
-                            category: TodoCategory.work)
-                      ],
+                      todos: completedTasks,
                       isCompleted: true,
                     ),
                     const Gap(20),
@@ -110,5 +85,35 @@ class HomeScreen extends StatelessWidget {
             ))
       ],
     ));
+  }
+
+  List<Todo> _incompltedTask(List<Todo> todos, WidgetRef ref) {
+    final date = ref.watch(dateProvider);
+    final List<Todo> filteredTodo = [];
+
+    for (var todo in todos) {
+      if (!todo.isCompleted) {
+        final isTodoDay = Helpers.isTodoFromSelectedDate(todo, date);
+        if (isTodoDay) {
+          filteredTodo.add(todo);
+        }
+      }
+    }
+    return filteredTodo;
+  }
+
+  List<Todo> _compltedTask(List<Todo> todos, WidgetRef ref) {
+    final date = ref.watch(dateProvider);
+    final List<Todo> filteredTodo = [];
+
+    for (var todo in todos) {
+      if (todo.isCompleted) {
+        final isTodoDay = Helpers.isTodoFromSelectedDate(todo, date);
+        if (isTodoDay) {
+          filteredTodo.add(todo);
+        }
+      }
+    }
+    return filteredTodo;
   }
 }
